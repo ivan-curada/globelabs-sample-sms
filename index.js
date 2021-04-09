@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
         res.status(403).send({ message: 'Invalid request.'});
     };
 
-    const APP_ID = '';
-    const APP_SECRET = '';
+    const APP_ID = process.env.APP_ID;
+    const APP_SECRET = process.env.APP_SECRET;
 
     // Construct our POST request.
     const globe_labs_url = `https://developer.globelabs.com.ph/oauth/access_token?app_id=${APP_ID}&app_secret=${APP_SECRET}&code=${code}`;
