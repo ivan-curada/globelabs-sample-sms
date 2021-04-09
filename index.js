@@ -66,7 +66,11 @@ app.post('/send', (req, res) => {
 
     const SHORT_CODE_SUFFIX = process.env.SHORT_CODE.substr(-4);
     const url = `https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/${SHORT_CODE_SUFFIX}/requests?access_token=${access_token}`;
-    axios.post(url, payload)
+    axios.post(url, payload, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then((response) => {
         res.send({ message: "Message Sent!", ...payload, ...response });
     })
