@@ -65,7 +65,7 @@ app.post('/send', (req, res) => {
                 message: message
             },
             senderAddress: SHORT_CODE_SUFFIX,
-            address: subscriber_number
+            address: `+63${subscriber_number}`
         }
     }
 
