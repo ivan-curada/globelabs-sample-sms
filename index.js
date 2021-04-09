@@ -53,12 +53,15 @@ app.get('/', (req, res) => {
 
 app.post('/send', (req, res) => {
 
+    // Get the access token, the subscriber number and the message from the request.
     const access_token = req.body.access_token;
     const subscriber_number = req.body.subscriber_number;
     const message = req.body.message;
 
+    // Next, we need our app short code's last 4 digits;
     const SHORT_CODE_SUFFIX = process.env.SHORT_CODE.substr(-4);
 
+    // Then, we need to compose our payload that we will send to Globe Labs.
     const payload = {
         outboundSMSMessageRequest: {
             outboundSMSTextMessage: {
@@ -68,18 +71,24 @@ app.post('/send', (req, res) => {
             address: `+63${subscriber_number}`
         }
     }
-
+    
+    // Compose our url
     const url = `https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/${SHORT_CODE_SUFFIX}/requests?access_token=${access_token}`;
+
+    // Send the request via Axios.
     axios.post(url, payload, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then((response) => {
-        res.send({ message: "Message Sent!", ...payload, ...response });
+    .then(() => {
+        // Success!
+        res.send(`Message sent!`);
     })
     .catch((err) => {
-        response.status(500).send({ message: 'Internal Server Error', error: err});
+        // If there was an error, we should log it.
+        console.error(err);
+        response.status(500).send({ message: 'Internal Server Error'});
     })
 
 });
