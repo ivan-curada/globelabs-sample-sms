@@ -26,21 +26,22 @@ app.get('/', (req, res) => {
     const APP_ID = process.env.APP_ID;
     const APP_SECRET = process.env.APP_SECRET;
 
+    const SHORT_CODE = process.env.SHORT_CODE;
+    const SHORT_CODE_CROSS_TELCO = process.env.SHORT_CODE_CROSS_TELCO;
+
     // Construct our POST request.
     const globe_labs_url = `https://developer.globelabs.com.ph/oauth/access_token?app_id=${APP_ID}&app_secret=${APP_SECRET}&code=${code}`;
 
     // Send it to Globe Labs!
     axios.post(globe_labs_url, {})
     .then((response) => {
-        // Store this to the database!
-        console.log(response.data);
-        console.log(response.request);
-
         const access_token = response.data.access_token;
         const subscriber_number = response.data.subscriber_number;
 
+        // Store this to the database!
         console.log(access_token, subscriber_number);
-        res.sendStatus(200);
+
+        res.send(`Thank you for registering your phone number. To stop receiving SMS notifications, send STOP to ${SHORT_CODE} for Globe or ${SHORT_CODE_CROSS_TELCO} for other networks.`);
     })
     .catch((err) => {
         // If there was an error, we should log it.
