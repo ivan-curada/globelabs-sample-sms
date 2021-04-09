@@ -57,14 +57,18 @@ app.post('/send', (req, res) => {
     const subscriber_number = req.body.subscriber_number;
     const message = req.body.message;
 
+    const SHORT_CODE_SUFFIX = process.env.SHORT_CODE.substr(-4);
+
     const payload = {
-        outboundSMSTextMessage: {
-            message: message
-        },
-        address: subscriber_number
+        outboundSMSMessageRequest: {
+            outboundSMSTextMessage: {
+                message: message
+            },
+            senderAddress: SHORT_CODE_SUFFIX,
+            address: subscriber_number
+        }
     }
 
-    const SHORT_CODE_SUFFIX = process.env.SHORT_CODE.substr(-4);
     const url = `https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/${SHORT_CODE_SUFFIX}/requests?access_token=${access_token}`;
     axios.post(url, payload, {
         headers: {
