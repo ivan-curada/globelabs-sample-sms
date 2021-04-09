@@ -2,13 +2,12 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios').default;
-const { response } = require('express');
 
 // Initialize the app;
 const app = express();
 // Allows Cross-Origin Resource Sharing for this app.
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
 // Assign a port where the app is exposed.
 const port = process.env.PORT || 8080;
@@ -47,7 +46,7 @@ app.get('/', (req, res) => {
     .catch((err) => {
         // If there was an error, we should log it.
         console.error(err);
-        response.status(500).send({ message: 'Internal Server Error'});
+        res.status(500).send({ message: 'Internal Server Error'});
     })
 });
 
