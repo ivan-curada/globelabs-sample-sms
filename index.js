@@ -7,7 +7,8 @@ const { response } = require('express');
 // Initialize the app;
 const app = express();
 // Allows Cross-Origin Resource Sharing for this app.
-app.use(cors())
+app.use(cors());
+app.use(express.json())
 
 // Assign a port where the app is exposed.
 const port = process.env.PORT || 8080;
