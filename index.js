@@ -50,6 +50,31 @@ app.get('/', (req, res) => {
     })
 });
 
+app.post('/send', (req, res) => {
+
+    const access_token = req.body.access_token;
+    const subscriber_number = req.body.subscriber_number;
+    const message = req.body.message;
+
+    const payload = {
+        outboundSMSTextMessage: {
+            message: message
+        },
+        address: subscriber_number
+    }
+
+    const SHORT_CODE_SUFFIX = process.env.SHORT_CODE.substr(-4);
+    const url = `https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/${SHORT_CODE_SUFFIX}/requests?access_token=${access_token}`;
+    axios.post(url, payload)
+    .then((response) => {
+        res.send({ message: "Message Sent!", ...payload, ...response });
+    })
+    .catch((err) => {
+        response.status(500).send({ message: 'Internal Server Error', error: err});
+    })
+
+});
+
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 })
