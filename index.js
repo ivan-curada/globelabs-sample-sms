@@ -88,7 +88,7 @@ app.post('/send', (req, res) => {
     .catch((err) => {
         // If there was an error, we should log it.
         console.error(err);
-        response.status(500).send({ message: 'Internal Server Error'});
+        res.sendStatus(500);
     })
 
 });
